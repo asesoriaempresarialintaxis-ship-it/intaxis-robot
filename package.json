@@ -1,0 +1,3 @@
+{ "name": "intaxis-robot-sunat", "version": "1.0.0", "private": true, "type": "module",
+  "scripts": { "start": "node worker.mjs", "calibrar": "node worker.mjs --calibrar", "prueba": "node prueba.mjs" },
+  "dependencies": { "playwright": "1.49.1" } }

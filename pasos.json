@@ -1,0 +1,156 @@
+{
+  "_ayuda": "Valores de partida. Los de «login» y «menu» se basan en cómo suele verse SOL y hay que confirmarlos con la calibración. Los pasos de COMPRA, VENTA y RH están marcados «pendiente» hasta calibrar con una cuenta real: ejecuta «node worker.mjs --calibrar» y pásale la carpeta calibracion/ a quien mantiene INTAXIS.",
+  "login": {
+    "url": "https://e-menu.sunat.gob.pe/cl-ti-itmenu/MenuInternet.htm",
+    "campos": {
+      "ruc": "#txtRuc",
+      "usuario": "#txtUsuario",
+      "clave": "#txtContrasena"
+    },
+    "enviar": "#btnAceptar",
+    "ok_texto": "que necesitas hacer|buzon electronico",
+    "error_texto": "usuario o clave incorrect|clave incorrect|contrasena incorrect|usuario incorrect|usuario bloquead|clave bloquead|credenciales incorrect|datos incorrect|intentos fallidos"
+  },
+  "menu": [
+    {
+      "clic_texto": "Empresas",
+      "exacto": true
+    },
+    {
+      "clic_texto": "Comprobantes de pago",
+      "exacto": true,
+      "nro": 1
+    },
+    {
+      "clic_texto": "Comprobantes de Pago",
+      "exacto": true,
+      "nro": 2
+    },
+    {
+      "clic_texto": "Consulta de Comprobantes de Pago",
+      "exacto": true
+    },
+    {
+      "clic_texto": "Nueva Consulta de comprobantes de pago",
+      "exacto": true
+    },
+    {
+      "esperar_texto": "Filtro de comprobante"
+    }
+  ],
+  "clases": {
+    "VENTA": [
+      {
+        "clic_texto": "Emitido",
+        "exacto": true
+      },
+      {
+        "clic_texto": "Seleccionar",
+        "exacto": true
+      },
+      {
+        "clic_texto": "{tipo_etiqueta}",
+        "exacto": true
+      },
+      {
+        "llenar": "input[type=text]:not([disabled]):not([readonly])",
+        "nth": -2,
+        "valor": "{serie}"
+      },
+      {
+        "llenar": "input[type=text]:not([disabled]):not([readonly])",
+        "nth": -1,
+        "valor": "{numero_sin_ceros}"
+      },
+      {
+        "clic_texto": "Consultar",
+        "exacto": true
+      },
+      {
+        "esperar_ms": 3000
+      },
+      {
+        "sin_resultados": "no hay resultados"
+      },
+      {
+        "descargar": {
+          "clic": "button:not(:has-text(\"Consultar\")):not(:has-text(\"Limpiar\")):not(:has-text(\"×\")):not(:has-text(\"Salir\")):not(:has-text(\"Toggle\")):not(:has-text(\"Ir al inicio\"))",
+          "probar": 3
+        }
+      }
+    ],
+    "COMPRA": [
+      {
+        "clic_texto": "Recibido",
+        "exacto": true
+      },
+      {
+        "clic_texto": "Seleccionar",
+        "exacto": true
+      },
+      {
+        "clic_texto": "{tipo_etiqueta}",
+        "exacto": true
+      },
+      {
+        "llenar": "input[type=text]:not([disabled]):not([readonly])",
+        "nth": -2,
+        "valor": "{serie}"
+      },
+      {
+        "llenar": "input[type=text]:not([disabled]):not([readonly])",
+        "nth": -1,
+        "valor": "{numero_sin_ceros}"
+      },
+      {
+        "clic_texto": "Consultar",
+        "exacto": true
+      },
+      {
+        "esperar_ms": 3000
+      },
+      {
+        "sin_resultados": "no hay resultados"
+      },
+      {
+        "descargar": {
+          "clic": "button:not(:has-text(\"Consultar\")):not(:has-text(\"Limpiar\")):not(:has-text(\"×\")):not(:has-text(\"Salir\")):not(:has-text(\"Toggle\")):not(:has-text(\"Ir al inicio\"))",
+          "probar": 3
+        }
+      }
+    ],
+    "RH": [
+      {
+        "pendiente": true
+      }
+    ]
+  },
+  "_ejemplo_de_pasos_ya_calibrados": [
+    {
+      "clic_texto": "Recibidos"
+    },
+    {
+      "elegir": "#cmbTipoComprobante",
+      "valor": "{tipo_sunat}"
+    },
+    {
+      "llenar": "#txtSerie",
+      "valor": "{serie}"
+    },
+    {
+      "llenar": "#txtNumero",
+      "valor": "{numero_sin_ceros}"
+    },
+    {
+      "clic": "#btnBuscar"
+    },
+    {
+      "sin_resultados": "no se encontraron"
+    },
+    {
+      "descargar": {
+        "clic_texto": "PDF"
+      }
+    }
+  ]
+}
