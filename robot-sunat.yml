@@ -1,0 +1,35 @@
+# Robot SUNAT gratis en GitHub Actions (repositorio PÚBLICO: los minutos son ilimitados).
+# Cada 5 minutos revisa si INTAXIS tiene pedidos de PDF en cola y los atiende; si no hay, termina enseguida.
+# Las llaves van en Settings → Secrets and variables → Actions (nunca en el código).
+name: Robot SUNAT
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: {}
+concurrency:
+  group: robot-sunat
+  cancel-in-progress: false
+jobs:
+  atender:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --omit=dev
+      - uses: actions/cache@v4
+        id: nav
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-1.49.1-${{ runner.os }}
+      - if: steps.nav.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+      - if: steps.nav.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+      - run: node worker.mjs --una-vez
+        env:
+          INTAXIS_URL: ${{ secrets.INTAXIS_URL }}
+          ROBOT_SUNAT_TOKEN: ${{ secrets.ROBOT_SUNAT_TOKEN }}
+          ROBOT_NOMBRE: github-1
